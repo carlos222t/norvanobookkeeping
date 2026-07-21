@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PTC AI — Parent-teacher conferences anytime, anywhere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-soft:#F6F6FB;
+    --ink:#111114;
+    --ink-soft:#5B6472;
+    --accent:#5A4FE5;
+    --accent-soft:#EFEDFE;
+    --radius:22px;
+  }
+  *,*::before,*::after{ box-sizing:border-box; }
+  body{
+    margin:0;
+    font-family:'Manrope', sans-serif;
+    background:radial-gradient(120% 140% at 15% 0%, var(--bg-soft) 0%, var(--bg) 45%, var(--bg) 100%);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  a{ color:inherit; text-decoration:none; }
+  .container{
+    width:100%; max-width:1300px; margin:0 auto; padding:0 40px;
+  }
+
+  /* ===== NAV ===== */
+  header{ padding:24px 0; }
+  nav{ display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:17px; }
+  .brand img{ width:26px; height:26px; border-radius:7px; }
+  .nav-links{ display:flex; align-items:center; gap:30px; list-style:none; margin:0; padding:0; }
+  .nav-links a{ font-size:14px; font-weight:500; color:var(--ink-soft); transition:color .2s; }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-actions{ display:flex; align-items:center; gap:20px; }
+  .nav-signin{ font-size:14px; font-weight:500; color:var(--ink); }
+  .nav-cta{
+    display:inline-flex; align-items:center;
+    background:var(--ink); color:#fff;
+    padding:10px 20px; border-radius:100px;
+    font-size:14px; font-weight:600;
+    transition:background .2s;
+  }
+  .nav-cta:hover{ background:var(--accent); }
+
+  /* ===== HERO ===== */
+  .hero{ position:relative; padding:64px 0 90px; }
+  .hero-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;
+  }
+  .hero-inner{ max-width:560px; }
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--accent-soft); color:var(--accent);
+    padding:7px 14px; border-radius:100px;
+    font-size:12.5px; font-weight:700;
+  }
+  .hero-eyebrow .arrow{ font-size:12px; }
+  .hero h1{
+    margin:22px 0 0; font-size:clamp(34px,4.4vw,54px); font-weight:800; line-height:1.18;
+  }
+  .hero h1 .line-strong{ color:var(--ink); }
+  .hero h1 .line-soft{ color:var(--ink-soft); font-weight:500; }
+  .hero-actions{ display:flex; align-items:center; gap:26px; margin-top:32px; }
+  .btn-dark{
+    background:var(--ink); color:#fff; padding:14px 26px; border-radius:100px;
+    font-size:15px; font-weight:700; transition:background .2s;
+  }
+  .btn-dark:hover{ background:var(--accent); }
+  .btn-text{ display:inline-flex; align-items:center; gap:6px; font-size:14.5px; font-weight:600; color:var(--ink); }
+  .btn-text .arrow{ transition:transform .2s; }
+  .btn-text:hover .arrow{ transform:translateX(3px); }
+
+  /* ===== HERO GRAPHIC (phone mockup) ===== */
+  .hero-visual{
+    position:relative; display:flex; align-items:center; justify-content:center;
+    min-height:700px;
+  }
+  .hero-mesh{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:640px; height:640px; z-index:0;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(90,79,229,0.55), transparent 55%),
+      radial-gradient(circle at 70% 35%, rgba(139,127,255,0.5), transparent 55%),
+      radial-gradient(circle at 45% 75%, rgba(255,111,216,0.4), transparent 55%);
+    filter:blur(60px);
+    opacity:0.8;
+  }
+  .hero-phone{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:auto; height:690px; max-height:none;
+    filter:drop-shadow(0 30px 50px rgba(17,17,20,0.35));
+    z-index:2;
+  }
+
+  @media (max-width:960px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero-visual{ order:-1; min-height:360px; }
+    .hero-phone{ height:340px; }
+    .hero-mesh{ width:400px; height:400px; }
+  }
+  @media (max-width:640px){
+    .nav-links{ display:none; }
+    .container{ padding:0 22px; }
+  }
+
+  /* ===== WAVE BANNER ===== */
+  .wave-banner{
+    position:relative; width:100%; height:110px; overflow:hidden;
+  }
+  .wave-parallax{ position:absolute; inset:0; }
+  .wave-layer{
+    position:absolute; left:0; top:0; width:200%; height:100%;
+    animation:waveMove 14s linear infinite;
+  }
+  .wave-layer svg{ display:block; width:100%; height:100%; }
+  .wave-back{ opacity:0.6; animation-duration:18s; }
+  .wave-front{ opacity:1; animation-duration:11s; animation-direction:reverse; }
+  @keyframes waveMove{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+  .bubble{
+    position:absolute; bottom:-20px; border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95), rgba(255,255,255,0.15) 70%);
+    animation:bubbleRise linear infinite;
+  }
+  @keyframes bubbleRise{
+    0%{ transform:translateY(0) scale(0.6); opacity:0; }
+    12%{ opacity:0.85; }
+    100%{ transform:translateY(-130px) scale(1); opacity:0; }
+  }
+
+  .reveal{
+    opacity:0; transform:translateY(40px) scale(0.94); filter:blur(10px);
+    transition:opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1), filter 1s cubic-bezier(.22,1,.36,1);
+    transition-delay:var(--reveal-delay, 0s);
+  }
+  .reveal.in-view{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+
+  .wave-banner{ will-change:transform; }
+
+  /* ===== SHARED SECTION STYLES ===== */
+  .section{ padding:110px 0; }
+  .section-head{ max-width:640px; margin:0 auto 56px; text-align:center; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--accent);
+  }
+  .eyebrow::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); }
+  .section-head h2{
+    margin:14px 0 0; font-size:clamp(28px,3.4vw,40px); font-weight:800; line-height:1.18; color:var(--ink);
+  }
+  .section-head p{ margin:14px 0 0; font-size:16px; line-height:1.65; color:var(--ink-soft); }
+
+  /* ===== HOW IT WORKS ===== */
+  .steps-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  .step-card{
+    background:#fff; border:1px solid var(--accent-soft); border-radius:20px; padding:30px 24px;
+    transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s cubic-bezier(.22,1,.36,1);
+  }
+  .step-card:hover{ transform:translateY(-6px); box-shadow:0 24px 44px -24px rgba(90,79,229,0.28); }
+  .step-num{
+    width:36px; height:36px; border-radius:10px; background:var(--accent-soft); color:var(--accent);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; margin-bottom:18px;
+  }
+  .step-card h3{ font-size:17px; margin:0 0 8px; color:var(--ink); }
+  .step-card p{ font-size:14px; line-height:1.65; color:var(--ink-soft); margin:0; }
+
+  /* ===== TRUST / DATA SOURCES ===== */
+  .trust{ background:var(--bg-soft); }
+  .data-chips-row{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; max-width:840px; margin:0 auto; }
+  .data-chip{
+    font-size:13px; font-weight:600; color:var(--ink); background:#fff;
+    border:1px solid var(--accent-soft); padding:9px 18px; border-radius:100px;
+  }
+  .trust-security{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; max-width:900px; margin:60px auto 0; }
+  .trust-security-item{ text-align:center; }
+  .trust-security-item .icon-wrap{
+    width:44px; height:44px; border-radius:12px; background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 14px;
+  }
+  .trust-security-item svg{ width:20px; height:20px; stroke:var(--accent); }
+  .trust-security-item h4{ font-size:15px; margin:0 0 6px; color:var(--ink); }
+  .trust-security-item p{ font-size:13.5px; color:var(--ink-soft); margin:0; line-height:1.6; }
+
+  /* ===== BENEFITS ===== */
+  .benefits-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .benefit-card{ background:#fff; border:1px solid var(--accent-soft); border-radius:22px; padding:34px 28px; }
+  .benefit-card .tag{ font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+  .benefit-card h3{ margin:12px 0 16px; font-size:20px; color:var(--ink); }
+  .benefit-card ul{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:11px; }
+  .benefit-card li{ font-size:14px; line-height:1.5; color:var(--ink-soft); padding-left:22px; position:relative; }
+  .benefit-card li::before{ content:"✓"; position:absolute; left:0; top:0; color:var(--accent); font-weight:800; }
+
+  /* ===== FEATURES ===== */
+  .features-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .feature-card{
+    background:#fff; border:1px solid var(--accent-soft); border-radius:20px; padding:30px 26px;
+    transition:transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s cubic-bezier(.22,1,.36,1);
+  }
+  .feature-card:hover{ transform:translateY(-6px); box-shadow:0 24px 44px -24px rgba(90,79,229,0.24); }
+  .feature-icon{
+    width:42px; height:42px; border-radius:12px; margin-bottom:18px;
+    background:linear-gradient(135deg,#8B7FFF,#5A4FE5);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .feature-icon svg{ width:20px; height:20px; stroke:#fff; }
+  .feature-card h3{ font-size:16.5px; margin:0 0 8px; color:var(--ink); }
+  .feature-card p{ font-size:14px; line-height:1.65; color:var(--ink-soft); margin:0; }
+
+  /* ===== ROADMAP ===== */
+  .roadmap{ background:var(--bg-soft); }
+  .roadmap-list{ display:flex; flex-direction:column; max-width:760px; margin:0 auto; }
+  .roadmap-item{
+    display:grid; grid-template-columns:150px 1fr; gap:28px;
+    padding:30px 0; border-bottom:1px solid var(--accent-soft);
+  }
+  .roadmap-item:first-child{ padding-top:0; }
+  .roadmap-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .roadmap-phase{ font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
+  .roadmap-phase strong{
+    display:block; font-size:22px; font-weight:800; color:var(--ink);
+    margin-top:6px; letter-spacing:0; text-transform:none;
+  }
+  .roadmap-item h4{ font-size:17px; margin:0 0 8px; color:var(--ink); }
+  .roadmap-item p{ font-size:14px; line-height:1.65; color:var(--ink-soft); margin:0; }
+
+  /* ===== CTA BAND ===== */
+  .cta-band{ padding:0 40px 110px; }
+  .cta-band-inner{
+    background:linear-gradient(135deg,#5A4FE5,#8B7FFF);
+    border-radius:32px; padding:64px 56px; text-align:center; color:#fff;
+    position:relative; overflow:hidden;
+  }
+  .cta-band-inner::before{
+    content:""; position:absolute; width:360px; height:360px; border-radius:50%;
+    background:rgba(255,255,255,0.18); filter:blur(70px); right:-100px; top:-120px;
+  }
+  .cta-band-inner h2{ position:relative; font-size:clamp(26px,3vw,36px); margin:0; }
+  .cta-band-inner p{ position:relative; margin:14px auto 0; max-width:480px; color:rgba(255,255,255,0.85); font-size:15.5px; line-height:1.6; }
+  .cta-actions{ position:relative; margin-top:30px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .btn-white{ background:#fff; color:var(--accent); padding:14px 28px; border-radius:100px; font-weight:700; font-size:14.5px; }
+  .btn-outline-white{ border:1.5px solid rgba(255,255,255,0.55); color:#fff; padding:14px 28px; border-radius:100px; font-weight:700; font-size:14.5px; }
+
+  /* ===== FOOTER ===== */
+  footer{ padding:80px 0 40px; }
+  .footer-grid{
+    display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:40px;
+    padding-bottom:48px; border-bottom:1px solid var(--accent-soft);
+  }
+  .footer-brand p{ margin-top:14px; font-size:14px; color:var(--ink-soft); max-width:270px; line-height:1.65; }
+  .footer-col h5{ font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); margin-bottom:16px; font-weight:700; }
+  .footer-col a{ display:block; font-size:14px; color:var(--ink); margin-bottom:11px; opacity:.72; transition:opacity .2s; }
+  .footer-col a:hover{ opacity:1; }
+  .footer-bottom{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-top:26px; font-size:13px; color:var(--ink-soft); flex-wrap:wrap; gap:12px;
+  }
+
+  @media (max-width:960px){
+    .steps-grid{ grid-template-columns:repeat(2,1fr); }
+    .benefits-grid{ grid-template-columns:1fr; }
+    .features-grid{ grid-template-columns:repeat(2,1fr); }
+    .trust-security{ grid-template-columns:1fr; gap:36px; }
+    .footer-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:640px){
+    .section{ padding:80px 0; }
+    .steps-grid{ grid-template-columns:1fr; }
+    .features-grid{ grid-template-columns:1fr; }
+    .roadmap-item{ grid-template-columns:1fr; gap:10px; }
+    .cta-band{ padding:0 16px 80px; }
+    .cta-band-inner{ padding:48px 28px; }
+    .footer-grid{ grid-template-columns:1fr; gap:32px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <a href="#top" class="brand">
+        <img src="ptcai.png" alt="PTC AI logo">
+        PTC AI
+      </a>
+      <ul class="nav-links">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="#auth" class="nav-signin">Sign in</a>
+        <a href="#auth" class="nav-cta">Get started</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-inner">
+        <span class="hero-eyebrow">Built for International American School of Cancun <span class="arrow">→</span></span>
+        <h1>
+          <span class="line-strong">Parent-teacher conferences anytime, anywhere.</span>
+          <span class="line-soft">Personalized insights and AI guidance from your school's data — no scheduling, no waiting for the next conference.</span>
+        </h1>
+        <div class="hero-actions">
+          <a href="#auth" class="btn-dark">Get started</a>
+          <a href="#how" class="btn-text">See how it works <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-mesh" aria-hidden="true"></div>
+        <img class="hero-phone" src="iphone.png" alt="PTC AI app on an iPhone">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wave-banner" aria-hidden="true">
+  <div class="wave-parallax wave-parallax-back">
+    <div class="wave-layer wave-back">
+      <svg viewBox="0 0 2400 140" preserveAspectRatio="none">
+        <path d="M0,30 C150,50 350,10 600,30 C850,50 1050,10 1200,30 C1350,50 1550,10 1800,30 C1950,50 2150,10 2400,30 L2400,110 C2250,130 2050,90 1800,110 C1650,130 1450,90 1200,110 C1050,130 850,90 600,110 C450,130 250,90 0,110 Z" fill="#4038B0"/>
+      </svg>
+    </div>
+  </div>
+  <div class="wave-parallax wave-parallax-front">
+    <div class="wave-layer wave-front">
+      <svg viewBox="0 0 2400 140" preserveAspectRatio="none">
+        <path d="M0,30 C150,50 350,10 600,30 C850,50 1050,10 1200,30 C1350,50 1550,10 1800,30 C1950,50 2150,10 2400,30 L2400,110 C2250,130 2050,90 1800,110 C1650,130 1450,90 1200,110 C1050,130 850,90 600,110 C450,130 250,90 0,110 Z" fill="#5A4FE5"/>
+      </svg>
+    </div>
+  </div>
+  <span class="bubble" style="left:6%; width:12px; height:12px; animation-duration:6s; animation-delay:0s;"></span>
+  <span class="bubble" style="left:16%; width:8px; height:8px; animation-duration:5s; animation-delay:1.2s;"></span>
+  <span class="bubble" style="left:27%; width:16px; height:16px; animation-duration:7.5s; animation-delay:0.6s;"></span>
+  <span class="bubble" style="left:39%; width:10px; height:10px; animation-duration:5.5s; animation-delay:2.1s;"></span>
+  <span class="bubble" style="left:48%; width:14px; height:14px; animation-duration:6.8s; animation-delay:0.3s;"></span>
+  <span class="bubble" style="left:58%; width:9px; height:9px; animation-duration:5.2s; animation-delay:1.8s;"></span>
+  <span class="bubble" style="left:68%; width:13px; height:13px; animation-duration:7s; animation-delay:0.9s;"></span>
+  <span class="bubble" style="left:77%; width:7px; height:7px; animation-duration:4.8s; animation-delay:2.6s;"></span>
+  <span class="bubble" style="left:86%; width:15px; height:15px; animation-duration:6.4s; animation-delay:1.5s;"></span>
+  <span class="bubble" style="left:94%; width:10px; height:10px; animation-duration:5.8s; animation-delay:0.4s;"></span>
+</div>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>From a question to a real answer, in four steps.</h2>
+      <p>No new accounts to remember, no dashboards to decode — just the questions parents already ask, answered the moment they think of them.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal" style="--reveal-delay:0s">
+        <div class="step-num">01</div>
+        <h3>Log in</h3>
+        <p>Parents log in through the existing school Parent Portal. The AI already knows which student is theirs — nothing new to set up.</p>
+      </div>
+      <div class="step-card reveal" style="--reveal-delay:.1s">
+        <div class="step-num">02</div>
+        <h3>Ask naturally</h3>
+        <p>"How is Sofia doing in math?" Ask by voice or text, the same way you'd text a friend.</p>
+      </div>
+      <div class="step-card reveal" style="--reveal-delay:.2s">
+        <div class="step-num">03</div>
+        <h3>AI retrieves the data</h3>
+        <p>Grades, MAP scores, attendance, teacher comments — pulled straight from approved school systems. Never invented, never guessed.</p>
+      </div>
+      <div class="step-card reveal" style="--reveal-delay:.3s">
+        <div class="step-num">04</div>
+        <h3>Get a clear answer</h3>
+        <p>A parent-friendly explanation of what the data means, plus one thing worth trying at home this week.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST / DATA SOURCES ============ -->
+<section class="section trust">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Real data, always</span>
+      <h2>The AI never invents an answer</h2>
+      <p>Every response is pulled straight from your school's own approved systems — nothing made up, nothing guessed.</p>
+    </div>
+    <div class="data-chips-row reveal">
+      <span class="data-chip">Grades</span>
+      <span class="data-chip">Teacher comments</span>
+      <span class="data-chip">MAP Growth scores</span>
+      <span class="data-chip">Reading levels (Lexile)</span>
+      <span class="data-chip">Attendance</span>
+      <span class="data-chip">Behavior records</span>
+      <span class="data-chip">Approaches to Learning</span>
+      <span class="data-chip">Homework completion</span>
+      <span class="data-chip">Project portfolios</span>
+      <span class="data-chip">Assessment results</span>
+      <span class="data-chip">Counselor notes</span>
+      <span class="data-chip">Service learning</span>
+      <span class="data-chip">Athletics</span>
+      <span class="data-chip">Clubs &amp; activities</span>
+    </div>
+    <div class="trust-security">
+      <div class="trust-security-item reveal" style="--reveal-delay:0s">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div>
+        <h4>Private by design</h4>
+        <p>Parents only ever see information for their own children.</p>
+      </div>
+      <div class="trust-security-item reveal" style="--reveal-delay:.1s">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h4>FERPA-aligned</h4>
+        <p>Built to follow FERPA and applicable Mexican privacy regulations, with every interaction logged for accountability.</p>
+      </div>
+      <div class="trust-security-item reveal" style="--reveal-delay:.2s">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 12c2-4 5.5-6 9-6s7 2 9 6c-2 4-5.5 6-9 6s-7-2-9-6z"/><circle cx="12" cy="12" r="2.5"/><path d="M4 4l16 16" opacity="0"/></svg></div>
+        <h4>Never trains on your data</h4>
+        <p>Your school's data stays yours. Conversations are encrypted end to end and never used to train the model.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BENEFITS ============ -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Who it's for</span>
+      <h2>Built for the whole school community</h2>
+      <p>Not a replacement for teachers — a way to make every conversation more accessible, informed, and efficient.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card reveal" style="--reveal-delay:0s">
+        <span class="tag">For parents</span>
+        <h3>Answers, anytime</h3>
+        <ul>
+          <li>24/7 access to student information</li>
+          <li>Clear explanations without educational jargon</li>
+          <li>Consistent communication across every teacher</li>
+          <li>Personalized suggestions for supporting learning at home</li>
+          <li>More productive parent-teacher conferences</li>
+        </ul>
+      </div>
+      <div class="benefit-card reveal" style="--reveal-delay:.1s">
+        <span class="tag">For teachers</span>
+        <h3>Conference time, reclaimed</h3>
+        <ul>
+          <li>Less time explaining information parents could review beforehand</li>
+          <li>An AI-generated briefing before every conference</li>
+          <li>More time for goal-setting, support, and student wellbeing</li>
+          <li>Talking points based on questions parents submitted in advance</li>
+        </ul>
+      </div>
+      <div class="benefit-card reveal" style="--reveal-delay:.2s">
+        <span class="tag">For students</span>
+        <h3>Growth, not just grades</h3>
+        <ul>
+          <li>Parents become better informed and more engaged</li>
+          <li>Progress highlighted over time, not just a single score</li>
+          <li>Space to reflect: "What should I improve before next term?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUTURE FEATURES ============ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">What's next</span>
+      <h2>Everything a conference covers. Available every day.</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal" style="--reveal-delay:0s">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h3>Pre-conference briefings</h3>
+        <p>Parents get a short summary before every conference; teachers get one too, with talking points and submitted questions.</p>
+      </div>
+      <div class="feature-card reveal" style="--reveal-delay:.08s">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Voice conversations</h3>
+        <p>Tap "Talk about my child" and have a natural spoken conversation, just like ChatGPT Voice.</p>
+      </div>
+      <div class="feature-card reveal" style="--reveal-delay:.16s">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 5h18M3 12h18M3 19h18"/></svg></div>
+        <h3>14+ languages</h3>
+        <p>Ask in English, get an answer in Spanish, French, or Mandarin — instantly, for every family at your school.</p>
+      </div>
+      <div class="feature-card reveal" style="--reveal-delay:.24s">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg></div>
+        <h3>Student reflection</h3>
+        <p>Students can ask their own questions, like "What should I improve before next term?"</p>
+      </div>
+      <div class="feature-card reveal" style="--reveal-delay:.32s">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 20v-6M6 20V10M18 20V4"/></svg></div>
+        <h3>Learning suggestions</h3>
+        <p>Ask what could help — the AI recommends activities based on real classroom performance.</p>
+      </div>
+      <div class="feature-card reveal" style="--reveal-delay:.4s">
+        <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div>
+        <h3>School FAQ</h3>
+        <p>One intelligent assistant for schedules, homework, uniforms, transportation, events, and everything in between.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="brand">
+          <img src="ptcai.png" alt="PTC AI logo">
+          PTC AI
+        </a>
+        <p>A concept proposal for calmer, smarter parent-teacher communication at the International American School of Cancun.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#roadmap">Roadmap</a>
+      </div>
+      <div class="footer-col">
+        <h5>Vision</h5>
+        <a href="#about">Who it's for</a>
+        <a href="#top">Overview</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="#">Privacy</a>
+        <a href="#">FERPA statement</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 PTC AI — a concept proposal for IAS.</span>
+      <span>Not yet in production.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+  }, { threshold: 0.2 });
+  revealEls.forEach(el => io.observe(el));
+
+  const waveBanner = document.querySelector('.wave-banner');
+  const waveParallaxBack = document.querySelector('.wave-parallax-back');
+  const waveParallaxFront = document.querySelector('.wave-parallax-front');
+  function updateWaveParallax(){
+    const rect = waveBanner.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const progress = (vh - rect.top) / (vh + rect.height);
+    const offset = (progress - 0.5) * 40;
+    waveParallaxBack.style.transform = `translateY(${offset * 0.6}px)`;
+    waveParallaxFront.style.transform = `translateY(${-offset}px)`;
+  }
+  window.addEventListener('scroll', updateWaveParallax, { passive:true });
+  updateWaveParallax();
+</script>
+
+</body>
+</html>
