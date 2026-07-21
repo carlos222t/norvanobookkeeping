@@ -1,2 +1,5 @@
 node_modules/
 .claude/
+Landing_Page/
+package.json
+package-lock.json
